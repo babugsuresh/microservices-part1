@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.6.7'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'groovy'
 }
 
 group = 'com.gsb'
@@ -15,18 +16,31 @@ configurations {
 }
 
 repositories {
-    maven { url 'https://repo.spring.io/release' }
     mavenCentral()
 }
 
 dependencies {
+    /*
+        Add Webflux, reactive test, Spring development and Utils project dependencies.
+     */
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
+
+    /*
+        Add below dependencies with BOM (Bill of Material) where these
+        Spoc dependencies are available to download from and they gets loaded with latest
+        version available, that's the reason we dont require to
+        add any version details also add 'groovy' plugin as defined above.
+     */
+    testImplementation platform('org.spockframework:spock-bom:2.1-groovy-3.0')
+    testImplementation 'org.spockframework:spock-core'
+    testImplementation 'org.spockframework:spock-spring'
 }
 
 tasks.named('test') {
